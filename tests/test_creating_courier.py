@@ -62,10 +62,12 @@ class TestCreatingCourier:
     @allure.title("Проверка валидации обязательных полей регистрации")
     @allure.description("Проверка отсутствия обязательных полей в данных регистрации")
     def test_validate_required_fields(self, test_data):
+
         with allure.step("Отправка запроса на создание курьера с неполными данными"):
             result = requests.post(
                 f"{Urls.SCOOTER_PRAKTIKUM_URL}{Urls.COURIER_CREATE}",
                 json=test_data
             )
+            
         with allure.step("Проверка статуса ответа"):
             assert result.status_code == HTTP_STATUS_CODES['BAD_REQUEST']
