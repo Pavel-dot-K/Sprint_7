@@ -86,10 +86,7 @@ class TestLoginCourier:
             assert response.status_code != HTTP_STATUS_CODES['SUCCESS']  # или 200 если константа не доступна
 
         with allure.step("Проверка наличия поля 'message' в теле ответа"):
-            try:
-                data = response.json()
-            except ValueError:
-                pytest.fail(f"Ответ не является JSON. Текст: {response.text}")
+            data = response.json()
             assert "message" in data
 
 

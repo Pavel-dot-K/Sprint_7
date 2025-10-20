@@ -34,8 +34,6 @@ class TestCreatingCourier:
     @allure.title('Проверяем невозможность создать двух идентичных курьеров')
     @allure.description('Используем фикстуру для создания нового курьера')
     def test_impossible_create_two_identical_couriers(self, courier_credentials: tuple[str, str, str]):
-        if not courier_credentials:
-            pytest.skip("Изначальная регистрация курьера не удалась; тест пропущен.")
 
         with allure.step("Добавляем курьера"):
             login, password, first_name = courier_credentials
@@ -53,6 +51,10 @@ class TestCreatingCourier:
 
         with allure.step("Проверяем код ответа"):
             assert courier_duplicate.status_code == HTTP_STATUS_CODES['CONFLICT']
+            
+        with allure.step("Проверка наличия поля 'message' в теле ответа"):
+            data = courier_duplicate.json()
+            assert "message" in data
 
 
     @pytest.mark.parametrize("test_data", [
@@ -71,3 +73,7 @@ class TestCreatingCourier:
             
         with allure.step("Проверка статуса ответа"):
             assert result.status_code == HTTP_STATUS_CODES['BAD_REQUEST']
+           
+        with allure.step("Проверка наличия поля 'message' в теле ответа"):
+            data = result.json()
+            assert "message" in data
